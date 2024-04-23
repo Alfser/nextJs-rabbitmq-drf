@@ -1,95 +1,157 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { Grid, TextField, Paper, Stack, Typography, Button } from '@mui/material'
+import { PersonInputs } from './types';
+import { createPersonService } from './services';
+
+export default function RegistrationPersonPage() {
+  const { register, handleSubmit, formState: { errors }} = useForm<PersonInputs>()
+  const onSubmit: SubmitHandler<PersonInputs> = (data: PersonInputs) => createPersonService(data)
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <main >
+      <Paper sx={{ 
+          display:'flex', 
+          justifyContent:'center', 
+          my:{
+            sx: 2,
+            md: 6
+          },
+          mx:{
+            sx: 10,
+            md: 20
+          },
+          p:{
+            sx: 3,
+            md: 6
+          },
+          borderRadius: 5,
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        }}>
+        <Stack component={'form'} onSubmit={handleSubmit(onSubmit)} spacing={4} sx={{ alignItems: 'center' }}>
+          <Typography>
+            Legal Entity Registration
+          </Typography>
+          <Grid container columnSpacing={2} rowSpacing={4}>
+            <Grid item md={6}>
+              <TextField
+                {...register('firstName', { required: true })}
+                id="first-name"
+                type="name"
+                label="First Name"
+                autoComplete="first name"
+                helperText="Petter"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                {...register('lastName', { required: true })}
+                id="last-name"
+                type="last-name"
+                label="Last Name"
+                autoComplete="last name"
+                helperText="Parker"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>
+                Adress 1
+              </Typography>
+              <TextField
+                {...register('adress1.street', { required: true })}
+                id="street1"
+                type="street1"
+                label="Street"
+                autoComplete="street1"
+                helperText="Park Avenue"
+                fullWidth
+              />
+              <TextField
+                {...register('adress1.number', { required: true, valueAsNumber: true })}
+                id="numer1"
+                type="number"
+                label="Nº"
+                autoComplete="number1"
+                helperText="456"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>
+                Adress 2
+              </Typography>
+              <TextField
+                {...register('adress2.street', { required: true })}
+                id="street2"
+                type="street2"
+                label="Street"
+                autoComplete="street2"
+                helperText="Park Avenue"
+                fullWidth
+              />
+              <TextField
+                {...register('adress2.number', { required: true, valueAsNumber: true })}
+                id="numer2"
+                type="number"
+                label="Nº"
+                autoComplete="number2"
+                helperText="456"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                {...register('city', { required: true })}
+                id="city"
+                type="city"
+                label="City"
+                autoComplete="City"
+                helperText="New York"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                {...register('state', { required: true })}
+                id="state"
+                type="state"
+                label="State"
+                autoComplete="State"
+                helperText="New York City"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                {...register('country', { required: true })}
+                id="country"
+                type="country"
+                label="Country"
+                autoComplete="country"
+                helperText="United State"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                {...register('email', { required: true })}
+                id="email"
+                type="email"
+                label="Email Adress"
+                autoComplete="email"
+                helperText="rock@gmail.com"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+          <Button type='submit' variant='outlined'>
+            Salvar
+          </Button>
+        </Stack>
+      </Paper>      
     </main>
   );
 }
