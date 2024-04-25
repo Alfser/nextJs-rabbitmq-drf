@@ -1,6 +1,5 @@
-# nextJs-rabbitmq-drf
 
-A simple exemple of messaging application using nextJS, Django Rest Framework and RabbitMQ
+# A exemple NextJS with messaging system
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
