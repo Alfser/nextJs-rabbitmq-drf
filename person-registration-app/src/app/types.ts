@@ -1,4 +1,5 @@
 export type PersonInputs = {
+    id: number | undefined
     firstName: string
     lastName: string
     adress1: AdressInputs
