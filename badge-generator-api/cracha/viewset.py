@@ -16,33 +16,3 @@ class BadgeViewSet(viewsets.ModelViewSet):
     """
     queryset = Badge.objects.all()
     serializer_class = BadgeSerializer
-    
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_200_OK: openapi.Response(
-                description="PDF file",
-                content={
-                    'application/pdf': {}
-                }
-            )
-        }
-    )
-    @action(
-        detail=False,
-        methods=['GET'],
-        url_name='export_people', 
-        url_path='export-people'
-    )
-    def export_people(self, request):
-        """
-            Generate badge as PDF
-        """
-        jasper_service = JasperReportService()
-
-        pdf_bytes = jasper_service.get_pdf_bytes('postgres.jrxml')
-        
-        # config pdf in a response
-        response = HttpResponse(content=pdf_bytes)
-        response['Content-Type'] = 'application/pdf'
-        response['Content-Disposition'] = 'attachment; filename="badge.pdf"'
-        return response
