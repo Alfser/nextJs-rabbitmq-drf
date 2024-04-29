@@ -1,9 +1,6 @@
 from pika import BlockingConnection, URLParameters
-from pika.credentials import PlainCredentials
-from pika.exceptions import AMQPConnectionError, KeyboardInterrupt
-from retry import retry
 from django.conf import settings
-import json
+
 
 class RabbitMQClient():
     BADGE_QUEUE='badge_queue'
@@ -11,7 +8,6 @@ class RabbitMQClient():
     channel = None
     data_dict: dict = dict
     
-    @retry((AMQPConnectionError, ), tries=3, delay=4)
     def connect(self):
         
         if self.is_connected():
@@ -24,13 +20,12 @@ class RabbitMQClient():
         self.channel = self.connection.channel()
         
     def is_connected(self):
-        return self.connection and self.connection.is_open
+        return self.connection and self.connection.is_open and self.channel and self.channel.is_open
     
     def close_connection(self):
         if self.is_connected():
             self.connection.close()
-            self.channel.close()
-            self.channel = self.connection = None
+        self.channel = self.connection = None
 
 class MQProducer(RabbitMQClient):
     def send_to_queue(self, queue: str, data: bytes | str):
@@ -47,6 +42,17 @@ class MQConsumer(RabbitMQClient):
         self.channel.basic_consume(
             queue=queue,
             on_message_callback=callback,
-            auto_ack=True
+            auto_ack=False
         )
+        print("Start consuming..")
         self.channel.start_consuming()
+
+    def consume(self, queue: str):
+        self.connect()
+        self.channel.queue_declare(queue=queue, durable=False)
+        return self.channel.consume(queue)
+
+    def consume_get(self, queue: str):
+        self.connect()
+        self.channel.queue_declare(queue=queue, durable=False)
+        return self.channel.basic_get(queue)
