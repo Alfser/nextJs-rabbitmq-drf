@@ -27,10 +27,13 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'true'
-
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
-REPORTS_DIR = os.path.join(BASE_DIR, 'jasper_report', 'reports')
+# RabbitMQ settings
+MQ_USER = os.getenv('MQ_USER')
+MQ_PASSWORD = os.getenv('MQ_PASSWORD')
+MQ_HOST = os.getenv('MQ_HOST')
+MQ_PORT = os.getenv('MQ_PORT')
 
 # Application definition
 
